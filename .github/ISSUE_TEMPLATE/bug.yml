@@ -1,0 +1,50 @@
+name: Bug Report
+description: File a bug report
+title: "BUG: "
+labels: ["bug"]
+projects: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this bug report. Please be as
+        specific as possible in the following questions.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What went wrong when you tried to use nmlform?
+      description: Please include information on how to reproduce the issue.
+      placeholder: This happened when I did this...
+      value: "This happened"
+    validations:
+      required: true
+  - type: textarea
+    id: expected-to-happen
+    attributes:
+      label: What did you expect to happen?
+      description: Or what do you think should have happened instead?
+      placeholder: "This should have happened..."
+      value: "This should have happened instead: "
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: |
+        Please copy and paste any relevant log output. This will be
+        automatically formatted into code, so you won't need to format it
+        yourself.
+      render: shell
+  - type: textarea
+    id: context
+    attributes:
+      label: Environment and additional information
+      description: |
+        Please provide information about your project environment
+        and any additional contextual information here.
+      placeholder: "Additional context here."
+      value: "Context: "
+    validations:
+      required: false

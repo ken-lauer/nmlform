@@ -1,0 +1,18 @@
+# setuptools_scm provides setuptools with a list of files that are managed by
+# the git. Unwanted files must be excluded here, in MANIFEST.in
+
+include LICENSE
+include README.md
+include mkdocs.yml
+
+graft docs
+
+global-exclude __pycache__
+global-exclude *.py[cod]
+
+# If including data files in the package, add a single file/glob:
+#
+# include path/to/data_file
+#
+# Or multiple recursively:
+# recursive-include path file*glob1* file*glob*2

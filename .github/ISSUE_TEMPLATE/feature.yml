@@ -1,0 +1,32 @@
+name: Feature request
+description: Ask for a feature
+title: "ENH: "
+labels: ["enhancement"]
+projects: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this request.  Please
+        be as specific as possible in the following questions.
+  - type: textarea
+    id: request
+    attributes:
+      label: What feature or enhancement would you like to have in nmlform?
+      description: Please include as many details as you can.
+      placeholder: I would like to be able to (...) with this existing feature (...).
+      value: "I would like..."
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Environment and additional information
+      description: |
+        Please provide information about your project environment
+        and any additional contextual information here.
+      placeholder: "Context: "
+      value: "Context"
+    validations:
+      required: false
