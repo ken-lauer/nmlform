@@ -11,19 +11,19 @@ edit individual values, without disturbing anything you did not touch.
 
 ## Installation
 
-Create a conda environment for the package:
+`nmlform` has no runtime dependencies, so a plain virtual environment is all you
+need:
 
 ```bash
-mamba env create -n nmlform python=3.12 pip
-conda activate nmlform
+python -m venv .venv
+source .venv/bin/activate  # on Windows: .venv\Scripts\activate
 ```
 
-And then install this package into the environment:
+Then install this package into the environment:
 
 ```bash
 git clone https://github.com/ken-lauer/nmlform
 cd nmlform
-export NMLFORM=$PWD
 python -m pip install .
 ```
 
