@@ -20,5 +20,5 @@ class NamelistFormatOptions:
     indent_char: str = " "
     blank_line_after_group: bool = True
     field_case: NameCase = "lower"
-    align_equals: bool = False
+    align_equals: bool = True
     align_comments: bool = True
