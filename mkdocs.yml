@@ -4,6 +4,7 @@ repo_name: ken-lauer/nmlform
 
 nav:
   - Home: index.md
+  - API reference: api.md
   - Development: development/development_guidelines.md
 
 theme:

@@ -5,7 +5,7 @@ _src_path: https://github.com/ken-lauer/cookiecutter-python.git
 conda_env: nmlform
 description: A formatter and round-trip parser for Fortran namelists
 email: 152229072+ken-lauer@users.noreply.github.com
-env_var: NMLTREE
+env_var: NMLFORM
 full_name: Ken Lauer
 github_org: ken-lauer
 github_user: ken-lauer

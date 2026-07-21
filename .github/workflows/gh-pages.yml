@@ -27,7 +27,7 @@ jobs:
         with:
           filename: "environment.yml"
           env_name: "nmlform"
-          env_var: "NMLTREE"
+          env_var: "NMLFORM"
       - name: Build Docs
         shell: bash -l {0}
         run: mkdocs build

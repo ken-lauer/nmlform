@@ -12,7 +12,7 @@ inputs:
   env_var:
     description: "Top level directory environment variable to set"
     required: false
-    default: "NMLTREE"
+    default: "NMLFORM"
   python_version:
     description: "Python version to install"
     required: false

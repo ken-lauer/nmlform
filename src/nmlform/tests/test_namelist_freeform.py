@@ -562,8 +562,9 @@ def test_format_wrapped_record_keeps_wrapping():
 
     src = "&g\n  x = 1, 2,\n        3\n  yy = 4\n/\n"
     out = interpolate_namelist(src, options=NamelistFormatOptions())
-    # Continuation values re-align under the first value character.
-    assert out == "&g\n  x = 1, 2,\n      3\n  yy = 4\n/\n"
+    # Continuation values re-align under the first value character (which the
+    # aligned '=' shifts one column right to clear the wider 'yy' key).
+    assert out == "&g\n  x  = 1, 2,\n       3\n  yy = 4\n/\n"
 
 
 def test_format_one_line_group_expands():
