@@ -3,10 +3,9 @@
 from __future__ import annotations
 
 import pathlib
+from typing import ClassVar
 
 import pytest
-
-from typing import ClassVar
 
 from ..namelist import (
     Namelist,

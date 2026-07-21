@@ -1,6 +1,8 @@
 """
 Parser tests ported from GCC's ``gfortran.dg/namelist_*.f90`` regression suite.
 
+Brought over to nmlform by way of Claude, as you might have expected.
+
 Each case feeds the namelist *input text* embedded in a gfortran regression
 test to :meth:`NamelistFile.parse` and checks the parsed groups, keys, and
 value tokens. Only gfortran tests that carry reusable input text are ported:
@@ -12,12 +14,6 @@ and are catalogued in :data:`SKIPPED` for the record.
 Value tokens are compared exactly as the parser yields them: quoted strings
 keep their quotes, Fortran repeat counts (``3*0``) are expanded, and complex
 literals ``(re,im)`` are single tokens.
-
-A handful of ported cases exercise legacy namelist delimiters the parser does
-not implement (``$group``/``$END`` openers and ``&end``/``$end`` terminators);
-these are marked ``xfail`` so the gap stays documented without reddening the
-suite. Everything else is a plain assertion — some may still fail against the
-current parser, which is expected and left for follow-up triage.
 """
 
 from __future__ import annotations
@@ -29,62 +25,63 @@ import pytest
 from ..namelist import NamelistFile
 
 # gfortran tests with no input text a parser can consume, kept for traceability.
-SKIPPED = {
-    "compile-error": [
-        "namelist_1",
-        "namelist_2",
-        "namelist_3",
-        "namelist_4",
-        "namelist_5",
-        "namelist_25",
-        "namelist_30",
-        "namelist_31",
-        "namelist_32",
-        "namelist_33",
-        "namelist_34",
-        "namelist_35",
-        "namelist_36",
-        "namelist_62",
-        "namelist_63",
-        "namelist_74",
-        "namelist_75",
-        "namelist_76",
-        "namelist_83",
-        "namelist_83_2",
-        "namelist_91",
-        "namelist_92",
-        "namelist_93",
-        "namelist_94",
-        "namelist_98",
-        "namelist_args",
-        "namelist_assumed_char",
-    ],
-    "roundtrip-writer": [
-        "namelist_13",
-        "namelist_14",
-        "namelist_18",
-        "namelist_29",
-        "namelist_38",
-        "namelist_53",
-        "namelist_57",
-        "namelist_65",
-        "namelist_69",
-        "namelist_70",
-        "namelist_84",
-        "namelist_95",
-        "namelist_internal",
-    ],
-    "runtime-error-report": [
-        "namelist_19",
-        "namelist_40",
-        "namelist_47",
-        "namelist_68",
-        "namelist_89",
-        "namelist_97",
-        "namelist_100",
-        "namelist_101",
-    ],
-}
+# Skipped tests:
+# SKIPPED = {
+#     "compile-error": [
+#         "namelist_1",
+#         "namelist_2",
+#         "namelist_3",
+#         "namelist_4",
+#         "namelist_5",
+#         "namelist_25",
+#         "namelist_30",
+#         "namelist_31",
+#         "namelist_32",
+#         "namelist_33",
+#         "namelist_34",
+#         "namelist_35",
+#         "namelist_36",
+#         "namelist_62",
+#         "namelist_63",
+#         "namelist_74",
+#         "namelist_75",
+#         "namelist_76",
+#         "namelist_83",
+#         "namelist_83_2",
+#         "namelist_91",
+#         "namelist_92",
+#         "namelist_93",
+#         "namelist_94",
+#         "namelist_98",
+#         "namelist_args",
+#         "namelist_assumed_char",
+#     ],
+#     "roundtrip-writer": [
+#         "namelist_13",
+#         "namelist_14",
+#         "namelist_18",
+#         "namelist_29",
+#         "namelist_38",
+#         "namelist_53",
+#         "namelist_57",
+#         "namelist_65",
+#         "namelist_69",
+#         "namelist_70",
+#         "namelist_84",
+#         "namelist_95",
+#         "namelist_internal",
+#     ],
+#     "runtime-error-report": [
+#         "namelist_19",
+#         "namelist_40",
+#         "namelist_47",
+#         "namelist_68",
+#         "namelist_89",
+#         "namelist_97",
+#         "namelist_100",
+#         "namelist_101",
+#     ],
+# }
 
 # The 61-character namelist object name from namelist_39.f90.
 _LONG = "b01234567890123456789012345678901234567890123456789012345678901"
