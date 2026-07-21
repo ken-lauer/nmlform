@@ -2,6 +2,8 @@
 
 `nmlform` is a formatter and round-trip parser for Fortran namelists.
 
+[Documentation](https://ken-lauer.github.io/nmlform)
+
 Unlike value-oriented readers, it keeps the source lines as the source of truth
 and derives a location-tagged tree over them, so comments, spacing, quoting, and
 layout survive a round trip. That makes it safe to reformat a namelist, or to
@@ -12,17 +14,17 @@ edit individual values, without disturbing anything you did not touch.
 Create a conda environment for the package:
 
 ```bash
-$ mamba env create -n nmlform python=3.12 pip
-$ conda activate nmlform
+mamba env create -n nmlform python=3.12 pip
+conda activate nmlform
 ```
 
 And then install this package into the environment:
 
 ```bash
-$ git clone https://github.com/ken-lauer/nmlform
-$ cd nmlform
-$ export NMLFORM=$PWD
-$ python -m pip install .
+git clone https://github.com/ken-lauer/nmlform
+cd nmlform
+export NMLFORM=$PWD
+python -m pip install .
 ```
 
 To install extras for running the package tests or documentation, use one the
@@ -65,10 +67,10 @@ $ nmlform example.nml
 Common options:
 
 ```console
-$ nmlform --in-place *.nml         # rewrite files in place
-$ nmlform --check *.nml            # exit non-zero if any file would change
-$ nmlform --diff *.nml             # show a unified diff of what would change
-$ cat example.nml | nmlform -      # read from stdin, write to stdout
+nmlform --in-place *.nml         # rewrite files in place
+nmlform --check *.nml            # exit non-zero if any file would change
+nmlform --diff *.nml             # show a unified diff of what would change
+cat example.nml | nmlform -      # read from stdin, write to stdout
 ```
 
 Layout is controlled by flags that mirror the API's formatting options
