@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
-from .apply import apply_namelist_values, interpolate_namelist, split_namelist_key
+from .apply import (
+    apply_namelist_values,
+    cli_main_set,
+    interpolate_namelist,
+    load_values_file,
+    split_namelist_key,
+)
 from .location import Location
 from .namelist import (
     Assignment,
@@ -36,8 +42,10 @@ __all__ = [
     "NamelistFormatOptions",
     "Token",
     "apply_namelist_values",
+    "cli_main_set",
     "interpolate_namelist",
     "is_namelist_file",
+    "load_values_file",
     "quote_value",
     "split_namelist_key",
     "unquote_value",

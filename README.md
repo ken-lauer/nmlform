@@ -27,16 +27,17 @@ cd nmlform
 python -m pip install .
 ```
 
-To install extras for running the package tests or documentation, use one the
-following:
+To install optional extras, use one of the following:
 
 ```bash
-# Install the base requirements and test suite requirements:
+# Optional parsers for YAML/TOML `--values` files (JSON needs nothing extra):
+$ python -m pip install .[all]
+# The test suite requirements:
 $ python -m pip install .[test]
-# Install the base requirements and the documentation requirements:
+# The documentation requirements:
 $ python -m pip install .[doc]
-# Install all of the requirements:
-$ python -m pip install .[test,doc]
+# Everything:
+$ python -m pip install .[all,test,doc]
 ```
 
 ## Command-line usage
@@ -78,6 +79,59 @@ Layout is controlled by flags that mirror the API's formatting options
 `--no-align-equals`, `--align-comments` / `--no-align-comments`,
 `--blank-line-after-group` / `--no-blank-line-after-group`). See
 `nmlform --help` for the full list.
+
+### Setting and removing values
+
+The `nmlform-set` console script edits a single namelist file, setting and/or
+removing values and writing the result to standard output (or to a file with
+`-o`, or back to the input file with `-i`). Edits are surgical: the source
+layout, comments, and untouched values are preserved verbatim.
+
+Given `plot.nml`:
+
+```fortran
+&plot
+  a = 1  ! a comment
+  bb = 2.0
+/
+```
+
+```console
+$ nmlform-set --set plot a 42 --set plot cc "'new'" --remove plot bb plot.nml
+&plot
+  a = 42  ! a comment
+  cc = 'new'
+/
+```
+
+`--set` and `--remove` are repeatable. Use `NAMELIST#N` (1-based) to target the
+N-th of a repeated group. Pass `--reformat` to also apply the formatting flags
+above; otherwise only the edited values change. See `nmlform-set --help`.
+
+Values can also come from a file with `--values` (repeatable; `-` reads stdin):
+
+```console
+$ nmlform-set --values overrides.json plot.nml
+$ nmlform-set --values overrides.yaml --set plot a 99 plot.nml   # --set wins
+```
+
+The format is inferred from the extension (override with `--values-format`):
+
+- **JSON** (built in), **YAML**, and **TOML** map groups to `{key: value}`
+  tables. A string becomes a quoted Fortran string, numbers and booleans become
+  Fortran literals (`.true.`), a list becomes a value list, and `null` removes
+  the key. YAML and TOML need the optional parsers: `pip install nmlform[all]`.
+- A **namelist file** (`.nml`/`.init`) is applied group by group, field by
+  field, copying each raw value verbatim — handy for merging one namelist's
+  values into another.
+
+For example, `overrides.json`:
+
+```json
+{ "plot": { "a": 42, "title": "hello", "bb": null } }
+```
+
+produces the same edit as `--set plot a 42 --set plot title "'hello'" --remove plot bb`.
 
 ## API usage
 

@@ -32,7 +32,8 @@ Issues = "https://github.com/ken-lauer/nmlform/issues"
 Documentation = "https://ken-lauer.github.io/nmlform"
 
 [project.optional-dependencies]
-test = ["pytest", "pytest-cov"]
+all = ["pyyaml", "tomli; python_version < '3.11'"]
+test = ["pytest", "pytest-cov", "pyyaml", "tomli; python_version < '3.11'"]
 doc = [
   "mkdocs",
   "mkdocs-jupyter",
@@ -51,6 +52,7 @@ file = "LICENSE"
 
 [project.scripts]
 "nmlform" = "nmlform.main:cli_main"
+"nmlform-set" = "nmlform.apply:cli_main_set"
 
 [tool.ruff]
 # Reference and defaults: https://docs.astral.sh/ruff/configuration/

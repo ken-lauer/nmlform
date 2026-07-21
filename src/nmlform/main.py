@@ -181,6 +181,18 @@ def _build_argparser() -> argparse.ArgumentParser:
         "non-zero if any file would be reformatted.",
     )
 
+    add_format_arguments(parser)
+
+    return parser
+
+
+def add_format_arguments(parser: argparse.ArgumentParser) -> None:
+    """
+    Add the shared ``NamelistFormatOptions`` flags to ``parser``.
+
+    The flags mirror `NamelistFormatOptions`; read them back with
+    `build_format_options`.
+    """
     fmt = parser.add_argument_group("formatting options")
     fmt.add_argument(
         "--indent-size",
@@ -218,7 +230,17 @@ def _build_argparser() -> argparse.ArgumentParser:
         help="Emit a blank line after each namelist group.",
     )
 
-    return parser
+
+def build_format_options(parsed: argparse.Namespace) -> NamelistFormatOptions:
+    """Build a `NamelistFormatOptions` from parsed `add_format_arguments` flags."""
+    return NamelistFormatOptions(
+        indent_size=parsed.indent_size,
+        indent_char="\t" if parsed.tabs else " ",
+        field_case=parsed.field_case,
+        align_equals=parsed.align_equals,
+        align_comments=parsed.align_comments,
+        blank_line_after_group=parsed.blank_line_after_group,
+    )
 
 
 def cli_main(args: list[str] | None = None) -> int:
@@ -240,17 +262,9 @@ def cli_main(args: list[str] | None = None) -> int:
     logging.basicConfig()
     logging.getLogger("nmlform").setLevel(parsed.log_level)
 
-    options = NamelistFormatOptions(
-        indent_size=parsed.indent_size,
-        indent_char="\t" if parsed.tabs else " ",
-        field_case=parsed.field_case,
-        align_equals=parsed.align_equals,
-        align_comments=parsed.align_comments,
-        blank_line_after_group=parsed.blank_line_after_group,
-    )
     return main(
         parsed.filenames,
-        options,
+        build_format_options(parsed),
         in_place=parsed.in_place,
         check=parsed.check,
         diff=parsed.diff,

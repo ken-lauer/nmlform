@@ -27,6 +27,31 @@ Layout is controlled by flags mirroring [`NamelistFormatOptions`][nmlform.Nameli
 `--blank-line-after-group` / `--no-blank-line-after-group`. Run `nmlform --help`
 for the full list.
 
+A second script, `nmlform-set`, edits values in a single file:
+
+```console
+$ nmlform-set --set plot a 42 --remove plot bb plot.nml   # to stdout
+$ nmlform-set -i --set plot a 42 plot.nml                 # in place
+```
+
+`--set NAMELIST KEY VALUE` and `--remove NAMELIST KEY` are repeatable; use
+`NAMELIST#N` (1-based) for the N-th of a repeated group. The source layout is
+preserved verbatim aside from the edits unless `--reformat` is given.
+
+Values can also be read from files with `--values` (repeatable):
+
+```console
+$ nmlform-set --values overrides.json plot.nml
+$ nmlform-set --values base.nml --set plot a 99 plot.nml   # --set wins
+```
+
+The format is inferred from the extension (or forced with `--values-format`):
+JSON (built in), YAML and TOML (via `pip install nmlform[all]`) map groups to
+`{key: value}` tables — strings become quoted, numbers/booleans become Fortran
+literals, lists become value lists, and `null` removes a key. A namelist
+(`.nml`/`.init`) values file is applied field by field, copying raw values
+verbatim. Run `nmlform-set --help` for the full list.
+
 ## API usage
 
 Parse a file (or a string) into a [`NamelistFile`][nmlform.NamelistFile], then
