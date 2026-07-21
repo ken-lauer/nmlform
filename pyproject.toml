@@ -94,3 +94,5 @@ testpaths = ["src/nmlform/tests"]
 [tool.setuptools_scm]
 version_file = "src/nmlform/_version.py"
 fallback_version = "0.0.0.dev0"
+# For publishing to testpypi (no funny local dev+hash suffix)
+local_scheme = "no-local-version"
