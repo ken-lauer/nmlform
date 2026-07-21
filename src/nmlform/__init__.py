@@ -35,7 +35,6 @@ __all__ = [
     "NamelistFile",
     "NamelistFormatOptions",
     "Token",
-    "__version__",
     "apply_namelist_values",
     "interpolate_namelist",
     "is_namelist_file",
