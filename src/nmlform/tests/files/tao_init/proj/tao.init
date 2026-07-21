@@ -1,0 +1,17 @@
+&tao_start
+  n_universes = 2
+  plot_file    = 'tao_plot.init'
+  startup_file = 'tao.startup'
+/
+
+!--------------------------------------------------------
+&tao_design_lattice
+!  unique_name_suffix="*::_##?"
+  design_lattice(1)%file = 'ring.lat.bmad'
+  design_lattice(2)%file = 'sub/inj.lat.bmad'
+/
+
+&tao_params
+  global%track_type = 'single'
+  global%n_opti_cycles = 100
+/

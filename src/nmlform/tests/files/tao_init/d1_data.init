@@ -1,0 +1,22 @@
+&tao_d2_data
+  d2_data%name = 'orbit'
+  universe = 1
+  n_d1_data = 2
+/
+
+&tao_d1_data
+  ix_d1_data = 1
+  d1_data%name = '12'
+  default_weight = 1e1
+  !datum( 1) =  'rel_floor.z'     'R0_MAR_END\1' '' 'R0_MAR_END\2'   'target'   0  1e1
+  datum( 1) =  'orbit.x'     '' '' 'R0_MAR_END\2'   'target'   0  1e1
+  datum( 2) =  'orbit.px'    '' '' 'R0_MAR_END\2'   'target'   0  1e1  ! horizontal
+/
+
+&tao_d1_data
+  ix_d1_data = 2
+  d1_data%name = 'y'
+  datum(1)%data_type = 'orbit.y'
+  datum(1)%ele_name = 'R0_MAR_END\2'
+  datum(1)%merit_type = 'target'
+/

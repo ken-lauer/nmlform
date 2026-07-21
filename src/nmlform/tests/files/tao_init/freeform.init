@@ -1,0 +1,28 @@
+! Free-form namelist input: continued values, shared lines, inline terminators.
+
+&tao_d1_data
+  ix_d1_data = 1
+  d1_data%name = 'wrapped'
+  datum(1) = 'orbit.x' '' ''
+             'END\2'          ! continues below
+             'target' 0 1e1
+  datum(2) = 'orbit.y' '' '' 'END\2' 'target' 0 1e1
+/
+
+&tao_var
+  v1_var%name = 'quads'
+  var(1:3)%ele_name = 'Q1', 'Q2',
+                      'Q3'
+  var(1:3)%attribute = 3*'k1'
+  default_weight = 1e1  default_step = 1e-4
+/
+
+&one_liner a = 1  b = 'has = / chars' /
+raw text after the one-liner group
+
+&strings
+  s1 = 'it''s'
+  s2 = 'a / b'
+  s3 = 'x',
+       'x = y'
+/
