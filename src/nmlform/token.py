@@ -45,6 +45,8 @@ class Token(str):
         self.loc = loc or Location(end_column=len(content))
         self._comments = comments
         self._upper = str.upper(self)
+        self._hash = hash(self._upper)
+        # self._hash = super().__hash__()
 
     def __eq__(self, other) -> bool:
         if isinstance(other, Token):
