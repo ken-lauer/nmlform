@@ -166,6 +166,12 @@ def test_repr() -> None:
     assert "abc" in repr(token)
 
 
+def test_repr_without_detail(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(Token, "_detailed_repr_", False)
+    token = Token("abc", loc=Location(line=3, end_line=3, end_column=6))
+    assert repr(token) == "Token('abc')"
+
+
 def test_repr_with_comments() -> None:
     token = Token("abc", comments=Comments(inline=Token("note")))
     assert "note" in repr(token)

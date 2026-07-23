@@ -61,10 +61,10 @@ class Location(NamedTuple):
 
     def __str__(self) -> str:
         user_line = self.line + 1
-        user_end_line = self.end_line
+        user_end_line = self.end_line + 1
         user_col = self.column + 1
         user_end_col = self.end_column
-        start = f"{self.filename}:{user_line}:{user_end_col}"
+        start = f"{self.filename}:{user_line}:{user_col}"
 
         if self.line == self.end_line:
             if user_col == user_end_col:
