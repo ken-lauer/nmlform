@@ -20,8 +20,9 @@ class Token(str):
     Comparisons are case-insensitive.
     """
 
+    __slots__ = ("_comments", "_hash", "_upper", "loc")
     loc: Location
-    comments: Comments
+    _comments: Comments | None
     _upper: str
     _hash: int
 
@@ -42,32 +43,50 @@ class Token(str):
         comments: Comments | None = None,
     ):
         self.loc = loc or Location(end_column=len(content))
-        self.comments = comments or Comments()
+        self._comments = comments
         self._upper = str.upper(self)
-
-        # internal error
-        if not isinstance(self.loc, Location):
-            raise ValueError(type(self.loc))
-        if not isinstance(self.comments, Comments):
-            raise ValueError(type(self.comments))
 
     def __eq__(self, other) -> bool:
         if isinstance(other, Token):
-            return self._upper == other._upper and self.comments == other.comments
-        if self._upper == other:
-            return True
+            if self._upper != other._upper:
+                return False
+            ours, theirs = self._comments, other._comments
+            if not ours:
+                return not theirs
+            if not theirs:
+                return False
+            return ours == theirs
         if isinstance(other, str):
-            return self._upper == other.upper()
-        return self._upper == str(other).upper()
+            return self._upper == other or self._upper == other.upper()
+        return NotImplemented
 
     def __ne__(self, other) -> bool:
-        return not (self == other)
+        result = self.__eq__(other)
+        if result is NotImplemented:
+            return result
+        return not result
 
     @property
     def is_quoted_string(self) -> bool:
         return (self.startswith(_SQUOTE) and self.endswith(_SQUOTE)) or (
             self.startswith(_DQUOTE) and self.endswith(_DQUOTE)
         )
+
+    def __hash__(self):
+        # pydantic complains about mutable default otherwise
+        return self._hash
+
+    @property
+    def comments(self) -> Comments:
+        # Created lazily; most tokens never have comments attached.
+        comments = self._comments
+        if comments is None:
+            comments = self._comments = Comments()
+        return comments
+
+    @comments.setter
+    def comments(self, comments: Comments) -> None:
+        self._comments = comments
 
     def remove_quotes(self) -> Token:
         if self.is_quoted_string:
@@ -90,21 +109,21 @@ class Token(str):
         return type(self)(
             str(self).lstrip(chars),
             loc=self.loc,
-            comments=self.comments,
+            comments=self._comments,
         )
 
     def strip(self, chars: str | None = None) -> Self:
         return type(self)(
             str(self).strip(chars),
             loc=self.loc,
-            comments=self.comments,
+            comments=self._comments,
         )
 
     def replace(self, old, new, count: SupportsIndex = -1) -> Self:
         return type(self)(
             str(self).replace(old, new, count),
             loc=self.loc,
-            comments=self.comments,
+            comments=self._comments,
         )
 
     def with_(
@@ -116,26 +135,26 @@ class Token(str):
         return type(self)(
             str(self),
             loc=loc or self.loc,
-            comments=comments or self.comments,
+            comments=comments or self._comments,
         )
 
     def upper(self):
         return type(self)(
             self._upper,
             loc=self.loc,
-            comments=self.comments,
+            comments=self._comments,
         )
 
     def lower(self):
         return type(self)(
             super().lower(),
             loc=self.loc,
-            comments=self.comments,
+            comments=self._comments,
         )
 
 
 class Delimiter(Token):
-    pass
+    __slots__ = ()
 
 
 _DQUOTE = Delimiter('"')
